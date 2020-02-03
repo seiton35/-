@@ -10,10 +10,10 @@ public class Main {
     static Task[] task = new Task[20];
 
     static String help = "new - new task\n" +
-            "start([num of task]) - start timer for task [num of task]\n" +
+            "start - start timer \n" +
             "stop - stop timer\n" +
-            "complete([num of task]) - mark as completed\n" +
-            "delete([num of task]) - delete task [num of task]";
+            "complete - mark as completed\n" +
+            "delete - delete task ";
 
     public static void main(String[] args) {
         inputTask();
@@ -37,6 +37,14 @@ public class Main {
                 System.out.println(tasy);
             }
         }
+    }
+
+    private static int InputNumOfaTask(){
+        Scanner in = new Scanner(System.in);
+        System.out.print("Input a number of task: ");
+        int numberOfTask = in.nextInt();
+        in.close();
+        return numberOfTask;
     }
 
 
@@ -66,11 +74,23 @@ public class Main {
     private static void command(){
         Scanner in = new Scanner(System.in);
         String com = in.nextLine();
+        in.close();
         switch (com){
             case ("help"):
                 System.out.println(help);
                 break;
-                case ("")
+            case ("start"):
+                //startTimer(InputNumOfaTask());                         TODO
+                break;
+            case ("stop"):
+                //stopTimer();
+                break;
+            case ("complete"):
+                //completeTask(InputNumOfaTask());                       TODO
+                break;
+            case ("delete"):
+                //deleteTask(InputNumOfaTask());                         TODO
+                break;
         }
     }
 
