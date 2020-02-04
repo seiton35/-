@@ -43,8 +43,8 @@ public class Task {
         this.backlog = backlog;
     }
 
-    public void setComplete(Boolean complete) {
-        this.complete = complete;
+    public void setComplete() {
+        this.complete = true;
     }
 
 

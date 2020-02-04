@@ -47,6 +47,14 @@ public class Main {
         return numberOfTask;
     }
 
+    private static void completeTask(int numOfTask){
+        for (Task tasy : task){
+            if (tasy.getNum() == numOfTask){
+                tasy.setComplete();
+            }
+        }
+    }
+
 
     private static void inputTask(){
         Scanner in = new Scanner(System.in);
@@ -86,7 +94,7 @@ public class Main {
                 //stopTimer();
                 break;
             case ("complete"):
-                //completeTask(InputNumOfaTask());                       TODO
+                completeTask(InputNumOfaTask());
                 break;
             case ("delete"):
                 //deleteTask(InputNumOfaTask());                         TODO
