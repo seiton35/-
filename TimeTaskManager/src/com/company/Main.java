@@ -16,11 +16,10 @@ public class Main {
             "delete - delete task ";
 
     public static void main(String[] args) {
-        inputTask();
-
+        inputCommand();
     }
 
-    public static int getLastTaskNum(){
+    private static int getLastTaskNum(){
         int lastTaskNum = 0;
 
         for (Task tasy : task){
@@ -31,7 +30,7 @@ public class Main {
         return lastTaskNum;
     }
 
-    public static void printTasks(){
+    private static void printTasks(){
         for (Task tasy : task){
             if (tasy!= null){
                 System.out.println(tasy);
@@ -55,8 +54,16 @@ public class Main {
         }
     }
 
+    private static void deleteTask(int numOfTask){
+        for (Task tasy : task){
+            if (tasy.getNum() == numOfTask){
+                tasy = null;
+            }
+        }
+    }
 
-    private static void inputTask(){
+
+    private static void newTask(){
         Scanner in = new Scanner(System.in);
         System.out.print("Input a name of task: ");
         String name = in.nextLine();
@@ -79,7 +86,8 @@ public class Main {
         printTasks();
     }
 
-    private static void command(){
+    private static void inputCommand(){
+        System.out.println(help);
         Scanner in = new Scanner(System.in);
         String com = in.nextLine();
         in.close();
@@ -91,14 +99,19 @@ public class Main {
                 //startTimer(InputNumOfaTask());                         TODO
                 break;
             case ("stop"):
-                //stopTimer();
+                //stopTimer();                                          TODO
                 break;
             case ("complete"):
                 completeTask(InputNumOfaTask());
                 break;
             case ("delete"):
-                //deleteTask(InputNumOfaTask());                         TODO
+                deleteTask(InputNumOfaTask());
                 break;
+            case ("new"):
+                newTask();
+                break;
+                default:
+                    System.out.println("uncnown command");
         }
     }
 
