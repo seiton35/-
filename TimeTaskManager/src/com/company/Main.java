@@ -2,6 +2,7 @@ package com.company;
 
 
 import support.Task;
+import support.Timer;
 
 import java.util.Scanner;
 
@@ -16,6 +17,7 @@ public class Main {
             "delete - delete task ";
 
     public static void main(String[] args) {
+        startTimer(3);
         inputCommand();
     }
 
@@ -62,6 +64,10 @@ public class Main {
         }
     }
 
+    private static void startTimer(int numOfTask){
+        Timer newTimer = new Timer();
+        newTimer.start();
+    }
 
     private static void newTask(){
         Scanner in = new Scanner(System.in);
@@ -96,7 +102,7 @@ public class Main {
                 System.out.println(help);
                 break;
             case ("start"):
-                //startTimer(InputNumOfaTask());                         TODO
+                startTimer(InputNumOfaTask());
                 break;
             case ("stop"):
                 //stopTimer();                                          TODO
