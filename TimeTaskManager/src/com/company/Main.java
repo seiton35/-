@@ -35,13 +35,15 @@ public class Main {
     }
 
     private static void printTasks(){
+        boolean hasTask = false;
         for (Task tasy : task){
-            if (tasy!= null){
+            if (tasy != null){
+                hasTask = true;
                 System.out.println(tasy);
             }
-            else {
-                System.out.println("no tsaks");
-            }
+        }
+        if (!hasTask) {
+            System.out.println("no tasks");
         }
     }
 
@@ -97,12 +99,14 @@ public class Main {
     }
 
     private static void inputCommand(){
-        boolean quit = true;
+        boolean quit = false;
+        Scanner in = new Scanner(System.in);
         String com = "";
-        while (quit) {
-            Scanner in = new Scanner(System.in);
+        if (in.hasNextLine()){
             com = in.nextLine();
-            in.close();
+        }
+        in.close();
+        while(!quit){
             switch (com){
                 case ("help"):
                     System.out.println(help);
@@ -123,11 +127,10 @@ public class Main {
                     newTask();
                     break;
                 case("list"):
-                    quit = false;
                     printTasks();
                     break;
                 case("quit"):
-                    quit = false;
+                    quit = true;
                     break;
                 default:
                     System.out.println("uncnown command");
@@ -136,6 +139,4 @@ public class Main {
             }
         }
     }
-
-
 }
