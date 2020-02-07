@@ -2,6 +2,7 @@ package com.company;
 
 
 import support.Task;
+import support.Timer;
 
 import java.util.Scanner;
 
@@ -9,13 +10,16 @@ public class Main {
 
     static Task[] task = new Task[20];
 
-    static String help = "new - new task\n" +
+    static String help = "list - list tasks\n" +
+            "new - new task\n" +
             "start - start timer \n" +
             "stop - stop timer\n" +
             "complete - mark as completed\n" +
-            "delete - delete task ";
+            "delete - delete task\n" +
+            "quit - quit task manager";
 
     public static void main(String[] args) {
+        System.out.println(help);
         inputCommand();
     }
 
@@ -34,6 +38,9 @@ public class Main {
         for (Task tasy : task){
             if (tasy!= null){
                 System.out.println(tasy);
+            }
+            else {
+                System.out.println("no tsaks");
             }
         }
     }
@@ -62,6 +69,10 @@ public class Main {
         }
     }
 
+    private static void startTimer(int numOfTask){
+        Timer newTimer = new Timer();
+        newTimer.start();
+    }
 
     private static void newTask(){
         Scanner in = new Scanner(System.in);
@@ -83,35 +94,46 @@ public class Main {
         in.close();
         task[lastTask] = new Task(lastTask + 1, name, steps, false);
 
-        printTasks();
     }
 
     private static void inputCommand(){
-        System.out.println(help);
-        Scanner in = new Scanner(System.in);
-        String com = in.nextLine();
-        in.close();
-        switch (com){
-            case ("help"):
-                System.out.println(help);
-                break;
-            case ("start"):
-                //startTimer(InputNumOfaTask());                         TODO
-                break;
-            case ("stop"):
-                //stopTimer();                                          TODO
-                break;
-            case ("complete"):
-                completeTask(InputNumOfaTask());
-                break;
-            case ("delete"):
-                deleteTask(InputNumOfaTask());
-                break;
-            case ("new"):
-                newTask();
-                break;
+        boolean quit = true;
+        String com = "";
+        while (quit) {
+            Scanner in = new Scanner(System.in);
+            com = in.nextLine();
+            in.close();
+            switch (com){
+                case ("help"):
+                    System.out.println(help);
+                    break;
+                case ("start"):
+                    startTimer(InputNumOfaTask());
+                    break;
+                case ("stop"):
+                    //stopTimer();                                          TODO
+                    break;
+                case ("complete"):
+                    completeTask(InputNumOfaTask());
+                    break;
+                case ("delete"):
+                    deleteTask(InputNumOfaTask());
+                    break;
+                case ("new"):
+                    newTask();
+                    break;
+                case("list"):
+                    quit = false;
+                    printTasks();
+                    break;
+                case("quit"):
+                    quit = false;
+                    break;
                 default:
                     System.out.println("uncnown command");
+                    inputCommand();
+                    break;
+            }
         }
     }
 
