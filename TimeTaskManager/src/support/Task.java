@@ -19,29 +19,28 @@ public class Task {
         return num;
     }
 
-    public String getName() {
-        return name;
-    }
+    //public String getName() {
+    //    return name;
+    //}
 
-    public String getBacklog() {
-        return backlog;
-    }
+    //public String getBacklog() {
+    //    return backlog;
+    //}
 
-    public Boolean getComplete() {
-        return complete;
-    }
+    //public Boolean getComplete() {
+    //    return complete;
+    //}
 
-    public void setNum(int num) {
-        this.num = num;
-    }
+    //public void setNum(int num) {
+    //    this.num = num;
+    //}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setBacklog(String backlog) {
-        this.backlog = backlog;
-    }
+    //public void setName(String name) {
+    //    this.name = name;
+    //}
+    //public void setBacklog(String backlog) {
+    //    this.backlog = backlog;
+    //}
 
     public void setComplete() {
         this.complete = true;

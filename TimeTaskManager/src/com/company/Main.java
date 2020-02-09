@@ -19,6 +19,9 @@ public class Main {
             "quit - quit task manager";
 
     public static void main(String[] args) {
+
+        startTimer();
+
         System.out.println(help);
         inputCommand();
     }
@@ -71,9 +74,13 @@ public class Main {
         }
     }
 
-    private static void startTimer(int numOfTask){
+    private static void startTimer(){
         Timer newTimer = new Timer();
         newTimer.start();
+    }
+
+    private static void stopTimer(){
+
     }
 
     private static void newTask(){
@@ -112,7 +119,7 @@ public class Main {
                     System.out.println(help);
                     break;
                 case ("start"):
-                    startTimer(InputNumOfaTask());
+                    startTimer();
                     break;
                 case ("stop"):
                     //stopTimer();                                          TODO
