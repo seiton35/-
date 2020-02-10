@@ -46,10 +46,11 @@ public class Main {
 
     private int getLastTaskNum() {
         int lastTaskNum = 0;
-
         for (Task tasy : task) {
             if (tasy != null) {
                 lastTaskNum++;
+            }else{
+                break;
             }
         }
         return lastTaskNum;
@@ -71,6 +72,7 @@ public class Main {
                 if (tasy != null) {
                     System.out.println(tasy);
                 }
+
             }
         }else {
             System.out.println("no tasks!");
