@@ -1,6 +1,5 @@
 package support;
 
-
 public class Task {
 
     private int num;
@@ -26,9 +25,6 @@ public class Task {
     public void setComplete() {
         this.complete = true;
     }
-
-
-
 
     @Override
     public String toString(){

@@ -16,8 +16,6 @@ public class Timer extends Thread {
         this.stop = false;
     }
 
-
-
     public void run() {
             try {
                 for(int i = 1; i <= 600; i++) {
@@ -33,9 +31,10 @@ public class Timer extends Thread {
                                 System.out.println("1 pomodoro is left!");
                             }
                         }
-                        Thread.sleep(3000);
+                        Thread.sleep(20);
                     }
                     else {
+                        setContin();
                         System.out.println("timer is stopped!");
                         break;
                     }

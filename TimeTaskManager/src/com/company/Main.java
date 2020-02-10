@@ -20,11 +20,6 @@ public class Main {
     public void setQuit(){
         this.quit = true;
     }
-    
-
-    public Main() {
-        this.timer = new Timer();
-    }
 
     static String help = "list - list tasks\n" +
             "new - new task\n" +
@@ -123,7 +118,8 @@ public class Main {
         }
     }
 
-    public void startTimer() {
+    private void startTimer() {
+        this.timer = new Timer();
         timer.start();
     }
 
@@ -153,10 +149,6 @@ public class Main {
     }
 
     private void inputCommand() {
-        //String com = "";
-        //if (in.hasNextLine()) {
-        //    com = in.nextLine();
-        //}
         switch (in.nextLine()) {
             case ("help"):
                 System.out.println(help);
