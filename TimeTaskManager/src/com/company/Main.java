@@ -1,6 +1,5 @@
 package com.company;
 
-
 import support.Task;
 import support.Timer;
 
@@ -10,140 +9,172 @@ public class Main {
 
     static Task[] task = new Task[20];
 
+    private static Timer timer;
+    private Scanner in;
+    private boolean quit;
+
+    public boolean getQuit() {
+        return quit;
+    }
+
+    public void setQuit(){
+        this.quit = true;
+    }
+    
+
+    public Main() {
+        this.timer = new Timer();
+    }
+
     static String help = "list - list tasks\n" +
             "new - new task\n" +
             "start - start timer \n" +
             "stop - stop timer\n" +
-            "complete - mark as completed\n" +
-            "delete - delete task\n" +
+            "comp - mark as completed\n" +
+            "del - delete task\n" +
             "quit - quit task manager";
 
     public static void main(String[] args) {
+        Main main = new Main();
 
-        startTimer();
+        main.in = new Scanner(System.in);
 
         System.out.println(help);
-        inputCommand();
+        while (!main.getQuit())
+            main.inputCommand();
     }
 
-    private static int getLastTaskNum(){
+    private int getLastTaskNum() {
         int lastTaskNum = 0;
 
-        for (Task tasy : task){
-            if (tasy!= null){
+        for (Task tasy : task) {
+            if (tasy != null) {
                 lastTaskNum++;
             }
         }
         return lastTaskNum;
     }
 
-    private static void printTasks(){
+    private boolean hasTask(){
         boolean hasTask = false;
-        for (Task tasy : task){
-            if (tasy != null){
+        for (Task tasy : task) {
+            if (tasy != null) {
                 hasTask = true;
-                System.out.println(tasy);
             }
         }
-        if (!hasTask) {
-            System.out.println("no tasks");
+        return hasTask;
+    }
+
+    private void printTasks() {
+        if (hasTask()){
+            for (Task tasy : task) {
+                if (tasy != null) {
+                    System.out.println(tasy);
+                }
+            }
+        }else {
+            System.out.println("no tasks!");
         }
     }
 
-    private static int InputNumOfaTask(){
-        Scanner in = new Scanner(System.in);
+    private int InputNumOfaTask() {
         System.out.print("Input a number of task: ");
         int numberOfTask = in.nextInt();
-        in.close();
         return numberOfTask;
     }
 
-    private static void completeTask(int numOfTask){
-        for (Task tasy : task){
-            if (tasy.getNum() == numOfTask){
-                tasy.setComplete();
+    private void completeTask() {
+        if (hasTask()) {
+            int numOfTask = InputNumOfaTask();
+            if (task[numOfTask - 1] != null) {
+                task[numOfTask - 1].setComplete();
+                System.out.println("task has been completed!");
             }
+            else
+                System.out.println("no task with this number!");
+        }
+        else {
+            System.out.println("no tasks!");
         }
     }
 
-    private static void deleteTask(int numOfTask){
-        for (Task tasy : task){
-            if (tasy.getNum() == numOfTask){
-                tasy = null;
+    private void deleteTask() {
+        if (hasTask()) {
+            int numOfTask = InputNumOfaTask();
+            if (task[numOfTask - 1] != null) {
+                task[numOfTask - 1] = null;
+                System.out.println("task has been deleted!");
             }
+            else
+                System.out.println("no task with this number!");
+        }
+        else {
+            System.out.println("no tasks!");
         }
     }
 
-    private static void startTimer(){
-        Timer newTimer = new Timer();
-        newTimer.start();
+    public void startTimer() {
+        timer.start();
     }
 
-    private static void stopTimer(){
-
+    private void stopTimer() {
+        timer.setStop();
     }
 
-    private static void newTask(){
-        Scanner in = new Scanner(System.in);
+    private void newTask() {
         System.out.print("Input a name of task: ");
         String name = in.nextLine();
         String steps = "";
         int lastTask = getLastTaskNum();
-        if(name.length()!= 0) {
+        if (name.length() != 0) {
             System.out.print("Input a steps: ");
             steps = in.nextLine();
-            if(steps.length()== 0) {
+            if (steps.length() == 0) {
                 System.out.println("must be at least one step!");
                 return;
             }
-        }else {
+        } else {
             System.out.println("name is too short!");
             return;
         }
-        in.close();
         task[lastTask] = new Task(lastTask + 1, name, steps, false);
+        System.out.println("task has been added!");
 
     }
 
-    private static void inputCommand(){
-        boolean quit = false;
-        Scanner in = new Scanner(System.in);
+    private void inputCommand() {
         String com = "";
-        if (in.hasNextLine()){
+        if (in.hasNextLine()) {
             com = in.nextLine();
         }
-        in.close();
-        while(!quit){
-            switch (com){
-                case ("help"):
-                    System.out.println(help);
-                    break;
-                case ("start"):
-                    startTimer();
-                    break;
-                case ("stop"):
-                    //stopTimer();                                          TODO
-                    break;
-                case ("complete"):
-                    completeTask(InputNumOfaTask());
-                    break;
-                case ("delete"):
-                    deleteTask(InputNumOfaTask());
-                    break;
-                case ("new"):
-                    newTask();
-                    break;
-                case("list"):
-                    printTasks();
-                    break;
-                case("quit"):
-                    quit = true;
-                    break;
-                default:
-                    System.out.println("uncnown command");
-                    inputCommand();
-                    break;
-            }
+        switch (com) {
+            case ("help"):
+                System.out.println(help);
+                break;
+            case ("start"):
+                startTimer();
+                break;
+            case ("stop"):
+                stopTimer();
+                break;
+            case ("comp"):
+                completeTask();
+                break;
+            case ("del"):
+                deleteTask();
+                break;
+            case ("new"):
+                newTask();
+                break;
+            case ("list"):
+                printTasks();
+                break;
+            case ("quit"):
+                setQuit();
+                break;
+            default:
+                System.out.println("unknown command");
+                break;
         }
     }
 }

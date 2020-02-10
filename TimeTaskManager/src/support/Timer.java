@@ -2,19 +2,28 @@ package support;
 
 public class Timer extends Thread {
 
-    public static boolean stop = false;
+    private volatile boolean stop;
 
-     public static void setStop(){
-        stop = true;
+    public boolean getStop() {
+        return stop;
     }
+
+    public void setStop() {
+        this.stop = true;
+    }
+
+    public void setContin() {
+        this.stop = false;
+    }
+
+
 
     public void run() {
             try {
                 for(int i = 1; i <= 600; i++) {
-                    if (!stop){
+                    if (!getStop()){
                         if (i % 100 == 0){
 
-                            System.out.println(i);
                             System.out.println(i/20+" minutes left");
 
                             if(i == 500){
@@ -28,10 +37,13 @@ public class Timer extends Thread {
                     }
                     else {
                         System.out.println("timer is stopped!");
+                        break;
                     }
                 }
             } catch (InterruptedException e) {
                 System.out.println("timer is interrupted");
         }
     }
+
+
 }
