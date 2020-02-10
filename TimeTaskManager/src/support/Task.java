@@ -19,6 +19,10 @@ public class Task {
         return num;
     }
 
+    public Boolean getComplete() {
+        return complete;
+    }
+
     public void setComplete() {
         this.complete = true;
     }

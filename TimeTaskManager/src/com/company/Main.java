@@ -79,7 +79,10 @@ public class Main {
 
     private int InputNumOfaTask() {
         System.out.print("Input a number of task: ");
-        int numberOfTask = in.nextInt();
+        int numberOfTask = 0;
+        if (in.hasNextInt()){
+            numberOfTask = in.nextInt();
+        }
         return numberOfTask;
     }
 
@@ -87,8 +90,13 @@ public class Main {
         if (hasTask()) {
             int numOfTask = InputNumOfaTask();
             if (task[numOfTask - 1] != null) {
-                task[numOfTask - 1].setComplete();
-                System.out.println("task has been completed!");
+                if (!task[numOfTask - 1].getComplete()){
+                    task[numOfTask - 1].setComplete();
+                    System.out.println("task has been completed!");
+                }
+                else {
+                    System.out.println("task already completed!");
+                }
             }
             else
                 System.out.println("no task with this number!");
@@ -143,11 +151,11 @@ public class Main {
     }
 
     private void inputCommand() {
-        String com = "";
-        if (in.hasNextLine()) {
-            com = in.nextLine();
-        }
-        switch (com) {
+        //String com = "";
+        //if (in.hasNextLine()) {
+        //    com = in.nextLine();
+        //}
+        switch (in.nextLine()) {
             case ("help"):
                 System.out.println(help);
                 break;
