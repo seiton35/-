@@ -16,6 +16,8 @@ public class Timer extends Thread {
         this.stop = false;
     }
 
+
+
     public void run() {
             try {
                 for(int i = 1; i <= 600; i++) {

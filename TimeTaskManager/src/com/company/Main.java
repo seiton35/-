@@ -1,13 +1,26 @@
 package com.company;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import support.Task;
 import support.Timer;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class Main {
 
     static Task[] task = new Task[20];
+
+    JsonFactory jsonFactory = new JsonFactory();
+
 
     private static Timer timer;
     private Scanner in;
@@ -29,14 +42,45 @@ public class Main {
             "del - delete task\n" +
             "quit - quit task manager";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JsonProcessingException {
         Main main = new Main();
+
+        task[0] = new Task(1,"eat","eating", false);
+        task[1] = new Task(2,"eadfst","ppping", true);
+        task[2] = new Task(3,"edsfsdft","sing", false);
+
+        main.saveTasks();
+
+        ObjectMapper ObjMapper = new ObjectMapper();
+        String allTasksString = ObjMapper.writeValueAsString(task);
+        System.out.println(allTasksString);
+
 
         main.in = new Scanner(System.in);
 
         System.out.println(help);
         while (!main.getQuit())
             main.inputCommand();
+    }
+
+    private void saveTasks(){
+        try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(
+                new File("activeTasks.json"), JsonEncoding.UTF8)){
+            jsonGenerator.writeStartArray();
+            for (Task tasy : task){
+                if (tasy != null){
+                    jsonGenerator.writeStartObject();
+                    jsonGenerator.writeNumberField("num", tasy.getNum());
+                    jsonGenerator.writeStringField("name", tasy.getName());
+                    jsonGenerator.writeStringField("backlog", tasy.getBacklog());
+                    jsonGenerator.writeBooleanField("complete", tasy.getComplete());
+                    jsonGenerator.writeEndObject();
+                }
+            }
+            jsonGenerator.writeEndArray();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()) .log(Level.SEVERE, null, ex);
+        }
     }
 
     private int getLastTaskNum() {

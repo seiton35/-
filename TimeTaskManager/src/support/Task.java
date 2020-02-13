@@ -18,9 +18,19 @@ public class Task {
         return num;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getBacklog() {
+        return backlog;
+    }
+
     public Boolean getComplete() {
         return complete;
     }
+
+
 
     public void setComplete() {
         this.complete = true;
