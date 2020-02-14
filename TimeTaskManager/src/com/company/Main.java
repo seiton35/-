@@ -1,9 +1,6 @@
 package com.company;
 
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import support.Task;
 import support.Timer;
@@ -45,16 +42,7 @@ public class Main {
     public static void main(String[] args) throws JsonProcessingException {
         Main main = new Main();
 
-        task[0] = new Task(1,"eat","eating", false);
-        task[1] = new Task(2,"eadfst","ppping", true);
-        task[2] = new Task(3,"edsfsdft","sing", false);
-
-        main.saveTasks();
-
-        ObjectMapper ObjMapper = new ObjectMapper();
-        String allTasksString = ObjMapper.writeValueAsString(task);
-        System.out.println(allTasksString);
-
+        main.parseTasksFromJson();
 
         main.in = new Scanner(System.in);
 
@@ -63,7 +51,7 @@ public class Main {
             main.inputCommand();
     }
 
-    private void saveTasks(){
+    private void saveTasksToJson(){
         try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(
                 new File("activeTasks.json"), JsonEncoding.UTF8)){
             jsonGenerator.writeStartArray();
@@ -79,7 +67,50 @@ public class Main {
             }
             jsonGenerator.writeEndArray();
         } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()) .log(Level.SEVERE, null, ex);
+            Logger.getLogger(Main.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void parseTasksFromJson(){
+        try(JsonParser jsonParser = jsonFactory.createJsonParser(
+                new File("activeTasks.json"))) {
+
+            int i = 0;
+            while(jsonParser.nextToken() != JsonToken.END_ARRAY){
+                task[i] = new Task();
+                while (jsonParser.nextToken() != JsonToken.END_OBJECT){
+                    String fieldName = jsonParser.getCurrentName();
+                    if (fieldName == null){
+                        continue;
+                    }
+                    switch (fieldName){
+                        case ("num"):
+                            jsonParser.nextToken();
+                            task[i].setNum(jsonParser.getIntValue());
+                            break;
+                        case ("name"):
+                            jsonParser.nextToken();
+                            task[i].setName(jsonParser.getText());
+                            break;
+                        case ("backlog"):
+                            jsonParser.nextToken();
+                            task[i].setBacklog(jsonParser.getText());
+                            System.out.println();
+                            break;
+                        case ("complete"):
+                            jsonParser.nextToken();
+                            task[i].setComplete(jsonParser.getBooleanValue());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                i++;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
@@ -132,7 +163,7 @@ public class Main {
             int numOfTask = InputNumOfaTask();
             if (task[numOfTask - 1] != null) {
                 if (!task[numOfTask - 1].getComplete()){
-                    task[numOfTask - 1].setComplete();
+                    task[numOfTask - 1].setComplete(true);
                     System.out.println("task has been completed!");
                 }
                 else {
@@ -211,6 +242,7 @@ public class Main {
                 break;
             case ("new"):
                 newTask();
+                saveTasksToJson();
                 break;
             case ("list"):
                 printTasks();

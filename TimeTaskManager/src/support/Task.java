@@ -7,6 +7,10 @@ public class Task {
     private String backlog;
     private Boolean complete;
 
+
+    public Task() {
+    }
+
     public Task(int num, String name, String backlog, Boolean complete) {
         this.num = num;
         this.name = name;
@@ -30,10 +34,20 @@ public class Task {
         return complete;
     }
 
+    public void setNum(int num) {
+        this.num = num;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public void setComplete() {
-        this.complete = true;
+    public void setBacklog(String backlog) {
+        this.backlog = backlog;
+    }
+
+    public void setComplete(Boolean complete) {
+        this.complete = complete;
     }
 
     @Override
