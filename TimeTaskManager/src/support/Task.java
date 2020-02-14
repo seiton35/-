@@ -18,22 +18,6 @@ public class Task {
         this.complete = complete;
     }
 
-    public int getNum() {
-        return num;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getBacklog() {
-        return backlog;
-    }
-
-    public Boolean getComplete() {
-        return complete;
-    }
-
     public void setNum(int num) {
         this.num = num;
     }
@@ -50,12 +34,37 @@ public class Task {
         this.complete = complete;
     }
 
+    public int getNum() {
+        return num;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getBacklog() {
+        return backlog;
+    }
+
+    public Boolean getComplete() {
+        return complete;
+    }
+
+    public String getStatus(){
+        if(this.complete){
+            return "complete";
+        }
+        else {
+            return "uncomplete";
+        }
+    }
+
     @Override
     public String toString(){
-        return "Task " + num +
-                "[ name: " + name +
-                ", steps: ( " + backlog +
-                " ) complete: " + complete +
+        return  num + ")- " +
+                name +
+                " [ steps: ( " + backlog +
+                " ) status: " + getStatus() +
                 " ]";
     }
 }
