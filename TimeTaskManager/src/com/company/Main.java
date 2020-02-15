@@ -52,7 +52,7 @@ public class Main {
 
     private void saveTasksToJson(){
         try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(
-                new File("activeTasks.json"), JsonEncoding.UTF8)){
+                new File("src/jsonFiles/activeTasks.json"), JsonEncoding.UTF8)){
             jsonGenerator.writeStartArray();
             for (Task tasy : task){
                 if (tasy != null){
@@ -73,7 +73,7 @@ public class Main {
 
     private void parseTasksFromJson(){
         try(JsonParser jsonParser = jsonFactory.createJsonParser(
-                new File("activeTasks.json"))) {
+                new File("src/jsonFiles/activeTasks.json"))) {
 
             int i = 0;
             while(jsonParser.nextToken() != JsonToken.END_ARRAY){
@@ -238,6 +238,7 @@ public class Main {
                 break;
             case ("del"):
                 deleteTask();
+                saveTasksToJson();
                 break;
             case ("new"):
                 newTask();
