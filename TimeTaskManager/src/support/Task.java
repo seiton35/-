@@ -7,10 +7,11 @@ public class Task {
     private String backlog;
     private Boolean complete;
 
-
+    //конструктор без параметров для парсера
     public Task() {
     }
 
+    //конструктор
     public Task(int num, String name, String backlog, Boolean complete) {
         this.num = num;
         this.name = name;
@@ -50,6 +51,7 @@ public class Task {
         return complete;
     }
 
+    //для красоты Override
     public String getStatus(){
         if(this.complete){
             return "complete";
