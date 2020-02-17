@@ -21,6 +21,7 @@ public class Main {
     private static Timer timer;
     private Scanner in;
     private boolean quit;
+    private boolean delCompWorked;
 
 
     public boolean getQuit() {
@@ -49,8 +50,10 @@ public class Main {
         main.in = new Scanner(System.in);
 
         System.out.println(help);
-        while (!main.getQuit())
+        while (!main.getQuit()){
             main.inputCommand();
+        }
+        main.in.close();
     }
 
     //запись задач в Tasks.json
@@ -201,7 +204,6 @@ public class Main {
                 }
                 else
                     System.out.println("no task with this number!");
-
             }
             else {
                 System.out.println("it is not num!");
@@ -226,12 +228,17 @@ public class Main {
     //создание новой задачи
     private void newTask() {
         System.out.print("Input a name of task: ");
-        String name = in.nextLine();
+        String name = "";
+        if (in.hasNextLine()){
+            name = in.nextLine();
+        }
         String steps = "";
         int lastTask = getLastTaskNum();
         if (name.length() != 0) {
             System.out.print("Input a steps: ");
-            steps = in.nextLine();
+            if(in.hasNextLine()){
+                steps = in.nextLine();
+            }
             if (steps.length() == 0) {
                 System.out.println("must be at least one step!");
                 return;
@@ -258,10 +265,13 @@ public class Main {
                 break;
             case ("comp"):
                 completeTask();
+                saveTasksToJson();
+                delCompWorked = true;
                 break;
             case ("del"):
                 deleteTask();
                 saveTasksToJson();
+                delCompWorked = true;
                 break;
             case ("new"):
                 newTask();
@@ -274,6 +284,9 @@ public class Main {
                 setQuit();
                 break;
             default:
+                if (delCompWorked){
+                    break;
+                }
                 System.out.println("unknown command. enter \"help\" to list commands");
                 break;
         }
