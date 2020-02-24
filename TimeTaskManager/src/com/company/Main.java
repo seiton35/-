@@ -58,23 +58,37 @@ public class Main {
 
     //запись задач в Tasks.json
     private void saveTasksToJson(){
-        try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(
-                new File("src/jsonFiles/Tasks.json"), JsonEncoding.UTF8)){
-            jsonGenerator.writeStartArray();
-            for (Task tasy : task){
-                if (tasy != null){
-                    jsonGenerator.writeStartObject();
-                    jsonGenerator.writeNumberField("num", tasy.getNum());
-                    jsonGenerator.writeStringField("name", tasy.getName());
-                    jsonGenerator.writeStringField("backlog", tasy.getBacklog());
-                    jsonGenerator.writeBooleanField("complete", tasy.getComplete());
-                    jsonGenerator.writeEndObject();
+        if (hasTask()){
+            try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(
+                    new File("src/jsonFiles/Tasks.json"), JsonEncoding.UTF8)){
+                jsonGenerator.writeStartArray();
+                for (Task tasy : task){
+                    if (tasy != null){
+                        jsonGenerator.writeStartObject();
+                        jsonGenerator.writeNumberField("num", tasy.getNum());
+                        jsonGenerator.writeStringField("name", tasy.getName());
+                        jsonGenerator.writeStringField("backlog", tasy.getBacklog());
+                        jsonGenerator.writeBooleanField("complete", tasy.getComplete());
+                        jsonGenerator.writeEndObject();
+                    }
                 }
+                jsonGenerator.writeEndArray();
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
-            jsonGenerator.writeEndArray();
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName())
-                    .log(Level.SEVERE, null, ex);
+        }
+        else {
+            try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(
+                    new File("src/jsonFiles/Tasks.json"), JsonEncoding.UTF8)){
+                jsonGenerator.writeStartArray();
+                jsonGenerator.writeStartObject();
+                jsonGenerator.writeEndObject();
+                jsonGenerator.writeEndArray();
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -82,7 +96,6 @@ public class Main {
     private void parseTasksFromJson(){
         try(JsonParser jsonParser = jsonFactory.createJsonParser(
                 new File("src/jsonFiles/Tasks.json"))) {
-
             int i = 0;
             while(jsonParser.nextToken() != JsonToken.END_ARRAY){
                 task[i] = new Task();
@@ -114,6 +127,9 @@ public class Main {
                     }
                 }
                 i++;
+            }
+            if (task[0].getName() == null){
+                task[0] = null;
             }
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName())
