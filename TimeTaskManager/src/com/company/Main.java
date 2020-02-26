@@ -65,7 +65,6 @@ public class Main {
                 for (Task tasy : task){
                     if (tasy != null){
                         jsonGenerator.writeStartObject();
-                        jsonGenerator.writeNumberField("num", tasy.getNum());
                         jsonGenerator.writeStringField("name", tasy.getName());
                         jsonGenerator.writeStringField("backlog", tasy.getBacklog());
                         jsonGenerator.writeBooleanField("complete", tasy.getComplete());
@@ -104,11 +103,8 @@ public class Main {
                     if (fieldName == null){
                         continue;
                     }
+                    task[i].setNum(i+1);
                     switch (fieldName){
-                        case ("num"):
-                            jsonParser.nextToken();
-                            task[i].setNum(jsonParser.getIntValue());
-                            break;
                         case ("name"):
                             jsonParser.nextToken();
                             task[i].setName(jsonParser.getText());
@@ -136,18 +132,18 @@ public class Main {
                     .log(Level.SEVERE, null, ex);
         }
     }
-
     //получение первого свободного номера для новой задачи
-    private int getLastTaskNum() {
-        int lastTaskNum = 0;
+    private int getFirstNullTaskNum(){
+        int getFirstNullTaskNum = 0;
         for (Task tasy : task) {
-            if (tasy != null) {
-                lastTaskNum++;
-            }else{
+            if (tasy == null){
                 break;
             }
+            else {
+                getFirstNullTaskNum++;
+            }
         }
-        return lastTaskNum;
+        return getFirstNullTaskNum;
     }
 
     //проверка существования задач
@@ -177,7 +173,7 @@ public class Main {
 
     //получение номера для создания или удаленя задачи
     private int InputNumOfaTask() {
-        System.out.print("Input a number of task: ");
+        System.out.print("Input a number of task: \n");
         int numberOfTask = 0;
         if (in.hasNextInt()){
             numberOfTask = in.nextInt();
@@ -211,18 +207,26 @@ public class Main {
 
     //удаление задачи
     private void deleteTask() {
+        boolean hasDelete = false;
         if (hasTask()) {
             int numOfTask = InputNumOfaTask();
-            if (numOfTask != -1){
-                if (task[numOfTask - 1] != null) {
-                    task[numOfTask - 1] = null;
-                    System.out.println("task has been deleted!");
+            if (numOfTask < 21 && numOfTask > 0){
+                for (int i = 0; i <20; i++){
+                    if (task[i] != null) {
+                        if (task[i].getNum() == numOfTask){
+                            task[i] = null;
+                            System.out.println("task has been deleted!");
+                            hasDelete = true;
+                            break;
+                        }
+                    }
                 }
-                else
+                if (!hasDelete){
                     System.out.println("no task with this number!");
+                }
             }
             else {
-                System.out.println("it is not num!");
+                System.out.println("uncorrect number!");
             }
         }
         else {
@@ -243,15 +247,15 @@ public class Main {
 
     //создание новой задачи
     private void newTask() {
-        System.out.print("Input a name of task: ");
+        System.out.print("Input a name of task: \n");
         String name = "";
         if (in.hasNextLine()){
             name = in.nextLine();
         }
         String steps = "";
-        int lastTask = getLastTaskNum();
+        int fitstNullTaskNum = getFirstNullTaskNum();
         if (name.length() != 0) {
-            System.out.print("Input a steps: ");
+            System.out.print("Input a steps: \n");
             if(in.hasNextLine()){
                 steps = in.nextLine();
             }
@@ -263,7 +267,7 @@ public class Main {
             System.out.println("name is too short!");
             return;
         }
-        task[lastTask] = new Task(lastTask + 1, name, steps, false);
+        task[fitstNullTaskNum] = new Task(fitstNullTaskNum + 1, name, steps, false);
         System.out.println("task has been added!");
     }
 
