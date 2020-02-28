@@ -36,7 +36,7 @@ public class Main {
     //список всех команд
     static String help = "list - list tasks\n" +
             "new - new task\n" +
-            "start - start timer \n" +
+            "start - start timer \n" + 
             "stop timer - stop timer\n" +
             "begin - set task status in \"in the process\"\n" +
             "stop task - set task status in \"beclog\"\n" +
