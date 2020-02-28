@@ -4,19 +4,17 @@ public class Task {
 
     private int num;
     private String name;
-    private String backlog;
-    private Boolean complete;
+    private String status;
 
     //конструктор без параметров для парсера
     public Task() {
     }
 
     //конструктор
-    public Task(int num, String name, String backlog, Boolean complete) {
+    public Task(int num, String name, String status) {
         this.num = num;
         this.name = name;
-        this.backlog = backlog;
-        this.complete = complete;
+        this.status = status;
     }
 
     public void setNum(int num) {
@@ -27,12 +25,8 @@ public class Task {
         this.name = name;
     }
 
-    public void setBacklog(String backlog) {
-        this.backlog = backlog;
-    }
-
-    public void setComplete(Boolean complete) {
-        this.complete = complete;
+    public void setStatus(String backlog) {
+        this.status = backlog;
     }
 
     public int getNum() {
@@ -43,30 +37,15 @@ public class Task {
         return name;
     }
 
-    public String getBacklog() {
-        return backlog;
+    public String getStatus() {
+        return status;
     }
 
-    public Boolean getComplete() {
-        return complete;
-    }
-
-    //для красоты Override
-    public String getStatus(){
-        if(this.complete){
-            return "complete";
-        }
-        else {
-            return "uncomplete";
-        }
-    }
 
     @Override
     public String toString(){
         return  num + ")- " +
                 name +
-                " [ steps: ( " + backlog +
-                " ) status: " + getStatus() +
-                " ]";
+                " [ " + status + " ]";
     }
 }
