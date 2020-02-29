@@ -21,7 +21,7 @@ public class Main {
     private static Timer timer;
     private Scanner in;
     private boolean quit;
-    private boolean statusChanged;
+    private boolean delCompWorked;
 
 
     public boolean getQuit() {
@@ -36,10 +36,8 @@ public class Main {
     //список всех команд
     static String help = "list - list tasks\n" +
             "new - new task\n" +
-            "start - start timer \n" + 
-            "stop timer - stop timer\n" +
-            "begin - set task status in \"in the process\"\n" +
-            "stop task - set task status in \"beclog\"\n" +
+            "start - start timer \n" +
+            "stop - stop timer\n" +
             "comp - mark as completed\n" +
             "del - delete task\n" +
             "quit - quit task manager";
@@ -68,7 +66,8 @@ public class Main {
                     if (tasy != null){
                         jsonGenerator.writeStartObject();
                         jsonGenerator.writeStringField("name", tasy.getName());
-                        jsonGenerator.writeStringField("status", tasy.getStatus());
+                        jsonGenerator.writeStringField("backlog", tasy.getBacklog());
+                        jsonGenerator.writeBooleanField("complete", tasy.getComplete());
                         jsonGenerator.writeEndObject();
                     }
                 }
@@ -110,10 +109,14 @@ public class Main {
                             jsonParser.nextToken();
                             task[i].setName(jsonParser.getText());
                             break;
-                        case ("status"):
+                        case ("backlog"):
                             jsonParser.nextToken();
-                            task[i].setStatus(jsonParser.getText());
+                            task[i].setBacklog(jsonParser.getText());
                             System.out.println();
+                            break;
+                        case ("complete"):
+                            jsonParser.nextToken();
+                            task[i].setComplete(jsonParser.getBooleanValue());
                             break;
                         default:
                             break;
@@ -181,57 +184,24 @@ public class Main {
         return numberOfTask;
     }
 
-    private void setInTheProcessStatus(){
-        if (hasTask()){
-            int numOfTask = InputNumOfaTask() - 1;
-            if (task[numOfTask] != null){
-                if (task[numOfTask].getStatus() != "in the process"){
-                    task[numOfTask].setStatus("in the process");
-                    System.out.println("the task was started!");
-                }
-                else {
-                    System.out.println("the task is already in the proсess!");
-                }
-            }
-            else {
-                System.out.println("no tasks with this number");
-            }
-        }
-    }
-
-    private void setCompleteStatus(){
-        if (hasTask()){
-            int numOfTask = InputNumOfaTask() -1;
-            if (task[numOfTask] != null){
-                if (task[numOfTask].getStatus() != "complete"){
-                    task[numOfTask].setStatus("complete");
+    //установка "выполнено" в задаче
+    private void completeTask() {
+        if (hasTask()) {
+            int numOfTask = InputNumOfaTask();
+            if (task[numOfTask - 1] != null) {
+                if (!task[numOfTask - 1].getComplete()){
+                    task[numOfTask - 1].setComplete(true);
                     System.out.println("task has been completed!");
                 }
                 else {
                     System.out.println("task already completed!");
                 }
             }
-            else {
-                System.out.println("no tasks with this number");
-            }
+            else
+                System.out.println("no task with this number!");
         }
-    }
-
-    private void setBacklogStatus(){
-        if (hasTask()){
-            int numOfTask = InputNumOfaTask() - 1;
-            if (task[numOfTask] != null){
-                if (task[numOfTask].getStatus() != "backlog"){
-                    task[numOfTask].setStatus("backlog");
-                    System.out.println("task has been stooped!");
-                }
-                else {
-                    System.out.println("task is already stopped!");
-                }
-            }
-            else {
-                System.out.println("no tasks with this number");
-            }
+        else {
+            System.out.println("no tasks!");
         }
     }
 
@@ -282,11 +252,22 @@ public class Main {
         if (in.hasNextLine()){
             name = in.nextLine();
         }
+        String steps = "";
         int fitstNullTaskNum = getFirstNullTaskNum();
-        if (name.length() == 0) {
+        if (name.length() != 0) {
+            System.out.print("Input a steps: \n");
+            if(in.hasNextLine()){
+                steps = in.nextLine();
+            }
+            if (steps.length() == 0) {
+                System.out.println("must be at least one step!");
+                return;
+            }
+        } else {
             System.out.println("name is too short!");
+            return;
         }
-        task[fitstNullTaskNum] = new Task(fitstNullTaskNum + 1, name, "backlog");
+        task[fitstNullTaskNum] = new Task(fitstNullTaskNum + 1, name, steps, false);
         System.out.println("task has been added!");
     }
 
@@ -299,30 +280,18 @@ public class Main {
             case ("start"):
                 startTimer();
                 break;
-            case ("stop timer"):
+            case ("stop"):
                 stopTimer();
-                saveTasksToJson();
-                statusChanged = true;
                 break;
             case ("comp"):
-                setCompleteStatus();
+                completeTask();
                 saveTasksToJson();
-                statusChanged = true;
-                break;
-            case ("begin"):
-                setInTheProcessStatus();
-                saveTasksToJson();
-                statusChanged = true;
-                break;
-            case ("stop task"):
-                setBacklogStatus();
-                saveTasksToJson();
-                statusChanged = true;
+                delCompWorked = true;
                 break;
             case ("del"):
                 deleteTask();
                 saveTasksToJson();
-                statusChanged = true;
+                delCompWorked = true;
                 break;
             case ("new"):
                 newTask();
@@ -335,7 +304,7 @@ public class Main {
                 setQuit();
                 break;
             default:
-                if (statusChanged){
+                if (delCompWorked){
                     break;
                 }
                 System.out.println("unknown command. enter \"help\" to list commands");
