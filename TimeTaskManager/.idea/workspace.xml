@@ -17,16 +17,26 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/Main.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="374">
               <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+=======
+            <state relative-caret-position="238">
+              <caret line="14" selection-start-line="14" selection-end-line="15" />
+>>>>>>> 430fedc... ..
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#505#506#0" expanded="true" />
                 <element signature="e#532#533#0" expanded="true" />
                 <element signature="e#586#587#0" expanded="true" />
                 <element signature="e#618#619#0" expanded="true" />
+<<<<<<< HEAD
                 <element signature="e#7588#7589#0" expanded="true" />
                 <element signature="e#7619#7620#0" expanded="true" />
+=======
+                <element signature="e#8557#8558#0" expanded="true" />
+                <element signature="e#8588#8589#0" expanded="true" />
+>>>>>>> 430fedc... ..
               </folding>
             </state>
           </provider>
@@ -203,7 +213,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32932165" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5021882" side_tool="true" weight="0.24726477" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32932165" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.3261105" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32603937" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -321,16 +331,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/Main.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="374">
           <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+=======
+        <state relative-caret-position="238">
+          <caret line="14" selection-start-line="14" selection-end-line="15" />
+>>>>>>> 430fedc... ..
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#505#506#0" expanded="true" />
             <element signature="e#532#533#0" expanded="true" />
             <element signature="e#586#587#0" expanded="true" />
             <element signature="e#618#619#0" expanded="true" />
+<<<<<<< HEAD
             <element signature="e#7588#7589#0" expanded="true" />
             <element signature="e#7619#7620#0" expanded="true" />
+=======
+            <element signature="e#8557#8558#0" expanded="true" />
+            <element signature="e#8588#8589#0" expanded="true" />
+>>>>>>> 430fedc... ..
           </folding>
         </state>
       </provider>
