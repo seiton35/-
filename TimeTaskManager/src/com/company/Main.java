@@ -3,38 +3,62 @@ package com.company;
 import com.fasterxml.jackson.core.*;
 import support.Task;
 import support.Timer;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * @author seyton35
+ * @version 1.0
+ * This is main class, responsible for managing the program
+ */
 public class Main {
 
+    /**
+     * This field is an array for storing all objects of the <strong>Task</strong>
+     */
     static Task[] task = new Task[20];
 
     JsonFactory jsonFactory = new JsonFactory();
 
-
+    /**
+     * This field creates an object of class <strong>Timer</strong>
+     */
     private static Timer timer;
+
+    /**
+     * This field creates an object of class <strong>Scaner</strong>
+     */
     private Scanner in;
+
+    /**
+     * The boolean private field required to exit the program
+     */
     private boolean quit;
     private boolean statusChanged;
 
-
+    /**
+     * This field returns the value to exit the program
+     * @return quit
+     */
     public boolean getQuit() {
         return quit;
     }
 
-    //выход из приложения
+    /**
+     * This field set true on quit
+     */
     public void setQuit(){
         this.quit = true;
     }
 
-    //список всех команд
-    static String help = "list - list tasks\n" +
+    /**
+     * The string field where I store all the command names
+     */
+    static String help =
+            "list - list tasks\n" +
             "new - new task\n" +
             "start - start timer \n" + 
             "stop timer - stop timer\n" +
@@ -44,7 +68,15 @@ public class Main {
             "del - delete task\n" +
             "quit - quit task manager";
 
+    /**
+     * Here start point of the program
+     * @param args
+     * @throws JsonProcessingException when it happens
+     * @see #getQuit()
+     * @see #inputCommand()
+     */
     public static void main(String[] args) throws JsonProcessingException {
+
         Main main = new Main();
 
         main.parseTasksFromJson();
@@ -58,7 +90,14 @@ public class Main {
         main.in.close();
     }
 
-    //запись задач в Tasks.json
+    /**
+     * This field saves all tasks from the array to json file
+     * if they are not, then keep empty json file
+     * @see #hasTask()
+     * @see Task#getName()
+     * @see Task#getStatus()
+     *
+     */
     private void saveTasksToJson(){
         if (hasTask()){
             try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(
@@ -92,7 +131,13 @@ public class Main {
         }
     }
 
-    //парсинг задач из Tasks.json
+    /**
+     * This field extracts all tasks from json file to array
+     * @see Task#setNum(int)
+     * @see Task#setName(String)
+     * @see Task#setStatus(String)
+     * @see Task#getName()
+     */
     private void parseTasksFromJson(){
         try(JsonParser jsonParser = jsonFactory.createJsonParser(
                 new File("src/jsonFiles/Tasks.json"))) {
@@ -129,7 +174,11 @@ public class Main {
                     .log(Level.SEVERE, null, ex);
         }
     }
-    //получение первого свободного номера для новой задачи
+
+    /**
+     * This field finds and return the first empty space in the array
+     * @return int getFirstNullTaskNum is first empty space in array
+     */
     private int getFirstNullTaskNum(){
         int getFirstNullTaskNum = 0;
         for (Task tasy : task) {
@@ -143,7 +192,10 @@ public class Main {
         return getFirstNullTaskNum;
     }
 
-    //проверка существования задач
+    /**
+     * This field returns false if there are no tasks
+     * @return boolean hasTask
+     */
     private boolean hasTask(){
         boolean hasTask = false;
         for (Task tasy : task) {
@@ -155,7 +207,11 @@ public class Main {
         return hasTask;
     }
 
-    //вывод списка всех существующих задач
+    /**
+     * This field displays all tasks in the console
+     * if they are not, present a message about their absence is displayed
+     * @see #hasTask()
+     */
     private void printTasks() {
         if (hasTask()){
             for (Task tasy : task) {
@@ -168,7 +224,10 @@ public class Main {
         }
     }
 
-    //получение номера для создания или удаленя задачи
+    /**
+     * This field returns the number entered by the user
+     * @return int numberOfTask
+     */
     private int InputNumOfaTask() {
         System.out.print("Input a number of task: \n");
         int numberOfTask = 0;
@@ -181,6 +240,12 @@ public class Main {
         return numberOfTask;
     }
 
+    /**
+     * This field sets the value "in process" in the properties of the task
+     * @see #InputNumOfaTask()
+     * @see Task#getStatus()
+     * @see Task#setStatus(String)
+     */
     private void setInTheProcessStatus(){
         if (hasTask()){
             int numOfTask = InputNumOfaTask() - 1;
@@ -197,8 +262,17 @@ public class Main {
                 System.out.println("no tasks with this number");
             }
         }
+        else {
+            System.out.println("no tasks!");
+        }
     }
 
+    /**
+     * This field sets the value "complete" in the properties of the task
+     * @see #InputNumOfaTask()
+     * @see Task#getStatus()
+     * @see Task#setStatus(String)
+     */
     private void setCompleteStatus(){
         if (hasTask()){
             int numOfTask = InputNumOfaTask() -1;
@@ -215,8 +289,17 @@ public class Main {
                 System.out.println("no tasks with this number");
             }
         }
+        else {
+            System.out.println("no tasks!");
+        }
     }
 
+    /**
+     * This field sets the value "backlog" in the properties of the task
+     * @see #InputNumOfaTask()
+     * @see Task#getStatus()
+     * @see Task#setStatus(String)
+     */
     private void setBacklogStatus(){
         if (hasTask()){
             int numOfTask = InputNumOfaTask() - 1;
@@ -233,9 +316,17 @@ public class Main {
                 System.out.println("no tasks with this number");
             }
         }
+        else {
+            System.out.println("no tasks!");
+        }
     }
 
-    //удаление задачи
+    /**
+     * This field removes the task from the array, if it exists
+     * @see #hasTask()
+     * @see #InputNumOfaTask()
+     * @see Task#getNum()
+     */
     private void deleteTask() {
         boolean hasDelete = false;
         if (hasTask()) {
@@ -264,18 +355,28 @@ public class Main {
         }
     }
 
-    //запуск таймера
+    /**
+     * This field starts <strong>start</strong> method from class <strong>Timer</strong>
+     * @see Timer#start()
+     */
     private void startTimer() {
         this.timer = new Timer();
         timer.start();
     }
 
-    //преждевременная остановка таймера
+    /**
+     This field starts <strong>stop</strong> method from class <strong>Timer</strong>
+     * @see Timer#setStop()
+     */
     private void stopTimer() {
         timer.setStop();
     }
 
-    //создание новой задачи
+    /**
+     * This field creates an object of class <strong> Task </strong> and writes it to an array
+     * @see #getFirstNullTaskNum()
+     * @see Task#Task(int, String, String)
+     */
     private void newTask() {
         System.out.print("Input a name of task: \n");
         String name = "";
@@ -290,7 +391,19 @@ public class Main {
         System.out.println("task has been added!");
     }
 
-    //ввод команд
+    /**
+     * This field takes the value from the keyboard and selects the appropriate method
+     * @see #startTimer()
+     * @see #stopTimer()
+     * @see #saveTasksToJson()
+     * @see #setCompleteStatus()
+     * @see #setInTheProcessStatus()
+     * @see #setBacklogStatus()
+     * @see #deleteTask()
+     * @see #newTask()
+     * @see #printTasks()
+     * @see #setQuit()
+     */
     private void inputCommand() {
         switch (in.nextLine()) {
             case ("help"):
@@ -336,6 +449,7 @@ public class Main {
                 break;
             default:
                 if (statusChanged){
+                    statusChanged = false;
                     break;
                 }
                 System.out.println("unknown command. enter \"help\" to list commands");
